@@ -38,7 +38,7 @@ const auth = (...roles: UserRole[]) => {
                 })
             };
 
-            if (!session.user.emailVerified) {
+            if (!session?.user.emailVerified) {
                 return res.status(403).json({
                     success: false,
                     message: "Email verification required.please verified your email."
@@ -53,7 +53,7 @@ const auth = (...roles: UserRole[]) => {
                 emailVerified: session.user.emailVerified,
             }
 
-            if (!roles.length && !roles.includes(req.user.role as UserRole)) {
+            if (roles.length && !roles.includes(req.user.role as UserRole)) {
                 return res.status(403).json({
                     success: false,
                     message: "Forbidden! You don't have permission to access this resources"

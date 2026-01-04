@@ -13,7 +13,7 @@ const createPost = async (req: Request, res: Response) => {
             })
         }
         console.log(req.user)
-        const result = await PostService.createPost(req.body, user.id as string);
+        const result = await PostService.createPost(req.body, user?.id as string);
         res.status(201).json(result);
 
     } catch (error) {
@@ -25,6 +25,20 @@ const createPost = async (req: Request, res: Response) => {
     }
 };
 
+const getAllPost = async(req: Request, res: Response)=>{
+    try {
+        const result = await PostService.getAllPost();
+        res.status(200).json(result);
+        
+    } catch (error) {
+        res.status(400).json({
+            error: "Failed to fetch posts",
+            details: error
+        })
+    }
+}
+
 export const PostController = {
-    createPost
+    createPost,
+    getAllPost,
 }
