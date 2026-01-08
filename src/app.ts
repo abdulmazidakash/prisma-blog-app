@@ -16,6 +16,7 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(express.json());
 
 app.use('/posts', postRouter);
+
 app.use('/comments', CommentRouter);
 
 app.get('/', (req, res)=>{

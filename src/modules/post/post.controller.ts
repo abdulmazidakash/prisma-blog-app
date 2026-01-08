@@ -73,12 +73,12 @@ const getAllPost = async (req: Request, res: Response) => {
 }
 
 
-const getPostById = async(req: Request, res: Response)=>{
+const getPostById = async (req: Request, res: Response) => {
     try {
         const { postId } = req.params;
         console.log(postId)
 
-        if(!postId){
+        if (!postId) {
             throw new Error('Post Id is required!');
         };
 
@@ -93,8 +93,55 @@ const getPostById = async(req: Request, res: Response)=>{
 };
 
 
+const getMyPosts = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        console.log('user data: ===>', user)
+        if (!user) {
+            return res.status(400).json({
+                error: "You are not authorized to access this resource",
+            })
+        };
+
+        console.log('user data: ===>', user)
+
+        const result = await PostService.getMyPosts(user.id);
+        console.log('user data: ===>', user)
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({
+            error: "Your post fetched failed",
+            details: error
+        })
+    }
+};
+
+
+const updatePost = async (req: Request, res: Response) => {
+    try {
+        const user = req.user;
+        if (!user) {
+            return res.status(400).json({
+                error: "You are not authorized to access this resource",
+            })
+        };
+        const { postId } = req.params;
+
+        const result = await PostService.updatePost(postId as string, req.body, user.id);
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(400).json({
+            error: "Your post updated failed",
+            details: error
+        })
+    }
+}
+
+
 export const PostController = {
     createPost,
     getAllPost,
     getPostById,
+    getMyPosts,
+    updatePost
 }
