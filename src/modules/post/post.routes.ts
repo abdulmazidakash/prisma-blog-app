@@ -13,7 +13,7 @@ router.get('/:postId', PostController.getPostById);
 
 router.get('/my-posts', auth(UserRole.ADMIN, UserRole.USER), PostController.getMyPosts);
 
-router.post('/', auth(UserRole.USER), PostController.createPost);
+router.post('/', auth(UserRole.USER, UserRole.ADMIN), PostController.createPost);
 
 router.patch('/:postId', auth(UserRole.ADMIN, UserRole.USER), PostController.updatePost);
 
